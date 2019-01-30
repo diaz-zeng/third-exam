@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>账本</title>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap.css"
+          th:href="@{/bootstrap/css/bootstrap.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap-grid.css"
+          th:href="@{/bootstrap/css/bootstrap-grid.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap-reboot.css"
+          th:href="@{/bootstrap/css/bootstrap-reboot.css}"/>
+</head>
+<body>
+<div id="App" :class="['container']">
+    <div :class="['container-fluid']">
+        <p :class="['h1','col-md-12','text-center']">记账管理</p>
+    </div>
+    <form :class="['form-inline','col-md-12']">
+        <div :class="['form-group','col-md-12']">
+            <label for="type" :class="['col-md-1']">类型</label>
+            <select id="type" name="type" :class="['col-md-3','form-control']">
+                <option value="0">不限</option>
+            </select>
+            <label for="start" :class="['col-md-1']">时间：从</label>
+            <input id="start" :class="['form-control','col-md-1']" name="start" type="date"/>
+            <label for="end" :class="['col-md-1']">到</label>
+            <input id="end" :class="['form-control','col-md-1']" name="start" type="date"/>
+            <span :class="['col-md-4']">
+            <button id="search" :class="['form-control','btn','btn-primary']">搜索</button>
+
+            <button id="add" :class="['form-control','btn','btn-info']">记账</button>
+            </span>
+        </div>
+    </form>
+    <div :class="['container-fluid']">
+        <table :class="['table table-hover table-striped table-bordered']">
+            
+        </table>
+    </div>
+</div>
+</body>
+<script src="../static/js/jquery.js" th:src="@{/js/jquery.js}"></script>
+<script src="../static/js/vue.js" th:src="@{/js/vue.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.js" th:src="@{/bootstrap/js/bootstrap.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.bundle.js" th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
+<script>
+    var vm = new Vue({
+        el: "#App",
+        data: {},
+        methods: {}
+    });
+</script>
+</html>
