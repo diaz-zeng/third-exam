@@ -3,6 +3,7 @@ package com.diaz.thirdexam.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,7 +25,8 @@ public class Bill implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date date;
     @ManyToOne(targetEntity = BillType.class, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "bill_type_id", referencedColumnName = "type_id")
+    @JoinColumn(name = "bill_type_value", referencedColumnName = "type_id")
+    @NotNull
     private BillType type;
     @Column(name = "bill_price")
     private Float price;
@@ -93,5 +95,17 @@ public class Bill implements Serializable {
     @Override
     public int hashCode() {
         return this.id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                ", type=" + type.getTitle() +
+                ", price=" + price +
+                ", explain='" + explain + '\'' +
+                '}';
     }
 }

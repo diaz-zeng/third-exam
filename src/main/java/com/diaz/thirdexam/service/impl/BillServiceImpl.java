@@ -4,13 +4,15 @@ import com.diaz.thirdexam.dao.BillDao;
 import com.diaz.thirdexam.dao.BillTypeDao;
 import com.diaz.thirdexam.entity.Bill;
 import com.diaz.thirdexam.entity.BillType;
+import com.diaz.thirdexam.exception.DataNotFoundException;
+import com.diaz.thirdexam.exception.IllegalDataException;
 import com.diaz.thirdexam.service.BillService;
+import com.diaz.thirdexam.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Diaz
@@ -27,15 +29,33 @@ public class BillServiceImpl implements BillService {
     PageRequest page;
 
     @Override
-    public Set<Bill> findByDateBetween(Date start, Date end, Integer currentPage) {
-        page = PageRequest.of(((currentPage - 1) * 25), 25, Sort.Direction.DESC);
-        return billDao.findByDateBetween(start, end, page);
+    public List<Bill> findByDateBetween(Date start, Date end, Integer currentPage) throws DataNotFoundException {
+        List<Bill> content = billDao.findByDateBetween(start, end, PageUtils.getPageRequest(currentPage)).getContent();
+        if (content != null && content.size() > 0) {
+            return content;
+        } else {
+            throw new DataNotFoundException();
+        }
     }
 
     @Override
-    public Set<Bill> findByDateBetweenAndType(Long typeId, Date start, Date end, Integer currentPage) {
-        page = PageRequest.of(((currentPage - 1) * 25), 25, Sort.Direction.DESC);
+    public List<Bill> findByDateBetweenAndType(Long typeId, Date start, Date end, Integer currentPage) throws IllegalDataException {
         BillType billType = billTypeDao.getOne(typeId);
-        return billDao.findByTypeAndDateBetween(billType, start, end, page);
+        if (billType != null) {
+            return billDao.findByTypeAndDateBetween(billType, start, end, PageUtils.getPageRequest(currentPage)).getContent();
+        } else {
+            throw new IllegalDataException();
+        }
     }
+
+    @Override
+    public List<Bill> findByPage(Integer currentPage) throws DataNotFoundException {
+        List<Bill> content = billDao.findAll(PageUtils.getPageRequest(currentPage)).getContent();
+        if (content != null && content.size() > 0) {
+            return content;
+        } else {
+            throw new DataNotFoundException();
+        }
+    }
+
 }

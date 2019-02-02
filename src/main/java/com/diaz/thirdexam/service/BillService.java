@@ -1,9 +1,11 @@
 package com.diaz.thirdexam.service;
 
 import com.diaz.thirdexam.entity.Bill;
+import com.diaz.thirdexam.exception.DataNotFoundException;
+import com.diaz.thirdexam.exception.IllegalDataException;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Diaz
@@ -11,7 +13,9 @@ import java.util.Set;
  */
 public interface BillService {
 
-    public Set<Bill> findByDateBetween(Date start, Date end, Integer currentPage);
+    List<Bill> findByDateBetween(Date start, Date end, Integer currentPage) throws DataNotFoundException;
 
-    public Set<Bill> findByDateBetweenAndType(Long typeId, Date start, Date end, Integer currentPage);
+    List<Bill> findByDateBetweenAndType(Long typeId, Date start, Date end, Integer currentPage) throws IllegalDataException;
+
+    List<Bill> findByPage(Integer Page) throws DataNotFoundException;
 }

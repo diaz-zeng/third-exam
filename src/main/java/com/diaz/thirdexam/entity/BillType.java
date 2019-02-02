@@ -15,33 +15,29 @@ public class BillType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "type_id")
-    private Long id;
+    private Long value;
     @Column(name = "type_name")
-    private String name;
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Bill.class, mappedBy = "bill", fetch = FetchType.LAZY)
+    private String title;
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Bill.class, mappedBy = "id", fetch = FetchType.LAZY)
     private Set<Bill> bills = new HashSet<>();
 
     public BillType() {
     }
 
-    public BillType(String name) {
-        this.name = name;
+    public Long getValue() {
+        return value;
     }
 
-    public Long getId() {
-        return id;
+    public void setValue(Long value) {
+        this.value = value;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getTitle() {
+        return title;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Set<Bill> getBills() {
@@ -50,5 +46,14 @@ public class BillType implements Serializable {
 
     public void setBills(Set<Bill> bills) {
         this.bills = bills;
+    }
+
+    @Override
+    public String toString() {
+        return "BillType{" +
+                "value=" + value +
+                ", title='" + title + '\'' +
+                ", bills=" + bills +
+                '}';
     }
 }
