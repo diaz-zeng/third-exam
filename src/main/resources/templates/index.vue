@@ -19,14 +19,15 @@
         <div class="card-body">
             <div class="form-inline">
                 <label for="type">类型</label>
-                <select class="form-control mx-auto" name="type" id="type">
-                    <option v-for="option in options" :key="option.value" :value="option.value"
+                <select class="form-control mx-auto" name="type" id="type" v-model="typeSelect">
+                    <option></option>
+                    <option v-for="option in types" :key="option.value" :value="option.value"
                             v-text="option.title"></option>
                 </select>
                 <label for="start">日期：从</label>
-                <input class="form-control mx-auto" type="date" name="start" id="start">
+                <input class="form-control mx-auto" type="date" name="start" id="start" v-model="start">
                 <label for="end">到</label>
-                <input class="form-control mx-auto" type="date" name="end" id="end">
+                <input class="form-control mx-auto" type="date" name="end" id="end" v-model="end">
                 <div class="mx-auto">
                     <button class="form-control btn btn-primary" type="button">查账</button>
                     <button class="form-control btn btn-secondary" type="button">记账</button>
@@ -64,7 +65,7 @@
             <div class="form-inline">
                 <div class="m-auto">
                     <button class="btn">上一页</button>
-                    当前第{{currentPage}}页
+                    当前第{{currentPage+1}}页
                     <button class="btn">下一页</button>
                 </div>
             </div>
@@ -79,21 +80,42 @@
 <script src="../static/bootstrap/js/bootstrap.js" th:src="@{/bootstrap/js/bootstrap.js}"></script>
 <script src="../static/bootstrap/js/bootstrap.bundle.js" th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
 <script src="../static/js/common.js" th:src="@{/js/common.js}"></script>
-<script>
-    var vmCommon = new Vue({
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<script type="module">
+
+    var vm = new Vue({
         el: "#App",
         data: {
-            options: [new Type(0, '不限'), new Type(1, '支出'), new Type(2, '收入')],
-            rows: null,
-            currentPage: 1
+            types: [],
+            rows: [],
+            currentPage: 0,
+            totalPage: 0,
+            typeSelect: null,
+            start: null,
+            end: null,
         },
         methods: {
-            getRowsByPage(currentPage = this.currentPage) {
-                this.$http.post()
+            findWithRule(type = null, start = null, end = null) {
+                var self = this;
+                // axios.post(``)
             }
         },
-        created: function () {
+        mounted: function () {
+            var self = this;
 
+            axios.post(`/initializePage`).then(resp => {
+                var data = eval(resp.data);
+                self.types = data['types'];
+            })
+
+            axios.get(`/doSearch_page${this.currentPage}`).then(resp => {
+                var data = eval(resp.data);
+                self.rows = data['rows'];
+                self.totalPage = parseInt(data['totalPage']);
+                // self.types = data['types'];
+            })
         }
     });
 </script>

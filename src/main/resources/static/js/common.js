@@ -23,4 +23,3 @@ Vue.filter('dateFormat', function (dateStr) {
 
     return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
 });
-

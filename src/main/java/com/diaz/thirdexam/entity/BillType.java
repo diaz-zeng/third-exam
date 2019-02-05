@@ -18,8 +18,6 @@ public class BillType implements Serializable {
     private Long value;
     @Column(name = "type_name")
     private String title;
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Bill.class, mappedBy = "id", fetch = FetchType.LAZY)
-    private Set<Bill> bills = new HashSet<>();
 
     public BillType() {
     }
@@ -40,20 +38,4 @@ public class BillType implements Serializable {
         this.title = title;
     }
 
-    public Set<Bill> getBills() {
-        return bills;
-    }
-
-    public void setBills(Set<Bill> bills) {
-        this.bills = bills;
-    }
-
-    @Override
-    public String toString() {
-        return "BillType{" +
-                "value=" + value +
-                ", title='" + title + '\'' +
-                ", bills=" + bills +
-                '}';
-    }
 }

@@ -1,8 +1,10 @@
 package com.diaz.thirdexam.service;
 
 import com.diaz.thirdexam.entity.Bill;
+import com.diaz.thirdexam.entity.BillType;
 import com.diaz.thirdexam.exception.DataNotFoundException;
 import com.diaz.thirdexam.exception.IllegalDataException;
+import org.springframework.data.domain.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -13,9 +15,20 @@ import java.util.List;
  */
 public interface BillService {
 
-    List<Bill> findByDateBetween(Date start, Date end, Integer currentPage) throws DataNotFoundException;
+    List<BillType> getTypes();
 
-    List<Bill> findByDateBetweenAndType(Long typeId, Date start, Date end, Integer currentPage) throws IllegalDataException;
+    Page<Bill> findByDateBetween(Date start, Date end, Integer currentPage) throws DataNotFoundException;
 
-    List<Bill> findByPage(Integer Page) throws DataNotFoundException;
+    Page<Bill> findFullRole(Long typeId, Date start, Date end, Integer currentPage) throws IllegalDataException, DataNotFoundException;
+
+    Page<Bill> findByPage(Integer currentPage) throws DataNotFoundException;
+
+    Page<Bill> findByType(Long typeId, Integer currentPage) throws DataNotFoundException, IllegalDataException;
+
+    Boolean save(Bill bill);
+
+    Page<Bill> generalSearch(Long typeId, Date start, Date end, Integer currentPage) throws IllegalDataException, DataNotFoundException;
+
+    BillType getType(Long typeId);
+
 }
