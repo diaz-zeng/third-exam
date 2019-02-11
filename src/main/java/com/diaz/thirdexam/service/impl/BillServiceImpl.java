@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -83,6 +84,7 @@ public class BillServiceImpl implements BillService {
         }
     }
 
+    @Transactional
     @Override
     public Boolean save(Bill bill) {
         return billDao.save(bill).getId() != null;

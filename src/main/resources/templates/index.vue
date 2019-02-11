@@ -19,18 +19,21 @@
         <div class="card-body">
             <div class="form-inline">
                 <label for="type">类型</label>
-                <select class="form-control mx-auto" name="type" id="type" v-model="typeSelect">
+                <select class="form-control mx-auto" name="type" id="type" v-model="searchRule.typeSelect">
                     <option></option>
                     <option v-for="option in types" :key="option.value" :value="option.value"
                             v-text="option.title"></option>
                 </select>
                 <label for="start">日期：从</label>
-                <input class="form-control mx-auto" type="date" name="start" id="start" v-model="start">
+                <input class="form-control mx-auto" type="date" name="start" id="start" v-model="searchRule.start">
                 <label for="end">到</label>
-                <input class="form-control mx-auto" type="date" name="end" id="end" v-model="end">
+                <input class="form-control mx-auto" type="date" name="end" id="end" v-model="searchRule.end">
                 <div class="mx-auto">
-                    <button class="form-control btn btn-primary" type="button">查账</button>
-                    <button class="form-control btn btn-secondary" type="button">记账</button>
+                    <button class="form-control btn btn-primary" type="button" @click="doSearch">查账
+                    </button>
+                    <button class="form-control btn btn-secondary" type="button"
+                            @click="goToAdd">记账
+                    </button>
                 </div>
             </div>
             <div class="my-5">
@@ -64,9 +67,9 @@
         <div class="card-footer">
             <div class="form-inline">
                 <div class="m-auto">
-                    <button class="btn">上一页</button>
-                    当前第{{currentPage+1}}页
-                    <button class="btn">下一页</button>
+                    <button class="btn" @click="backPage">上一页</button>
+                    当前第{{searchRule.currentPage+1}}页/共{{searchRule.totalPage}}页
+                    <button class="btn" @click="nextPage">下一页</button>
                 </div>
             </div>
         </div>
@@ -88,18 +91,63 @@
     var vm = new Vue({
         el: "#App",
         data: {
+            searchRule: {
+                currentPage: 0,
+                totalPage: 0,
+                typeSelect: null,
+                start: null,
+                end: null,
+            },
             types: [],
             rows: [],
-            currentPage: 0,
-            totalPage: 0,
-            typeSelect: null,
-            start: null,
-            end: null,
+            currentRule: {
+                currentPage: 0,
+                totalPage: 0,
+                typeSelect: null,
+                start: null,
+                end: null,
+            },
         },
         methods: {
-            findWithRule(type = null, start = null, end = null) {
+            findWithRule(rule) {
                 var self = this;
-                // axios.post(``)
+                $.ajax({
+                    type: 'post',
+                    url: `/doSearch_page${self.searchRule.currentPage}`,
+                    data: rule,
+                    contentType: 'application/x-www-form-urlencoded',
+                    dataType: 'json',
+                    async: true,
+                    success: function (json) {
+                        if (json['errorMsg'] == null) {
+                            self.searchRule.totalPage = json['totalPage'];
+                            self.rows = json['rows'];
+                            self.searchRule.currentPage = json['currentPage'];
+                            self.currentRule = self.searchRule;
+                        } else {
+                            alert(json['errorMsg']);
+                        }
+                    }
+                })
+            },
+            doSearch() {
+                this.searchRule.currentPage = 0;
+                this.findWithRule(this.searchRule);
+            },
+            nextPage() {
+                if (this.searchRule.currentPage + 1 < this.searchRule.totalPage) {
+                    this.currentRule.currentPage += 1;
+                    this.findWithRule(this.currentRule);
+                }
+            },
+            backPage() {
+                if (this.searchRule.currentPage - 1 > -1) {
+                    this.currentRule.currentPage -= 1;
+                    this.findWithRule(this.currentRule);
+                }
+            },
+            goToAdd() {
+                window.location.href = '/add';
             }
         },
         mounted: function () {
@@ -110,12 +158,14 @@
                 self.types = data['types'];
             })
 
-            axios.get(`/doSearch_page${this.currentPage}`).then(resp => {
-                var data = eval(resp.data);
-                self.rows = data['rows'];
-                self.totalPage = parseInt(data['totalPage']);
-                // self.types = data['types'];
-            })
+            // axios.get(`/doSearch_page${this.searchRule.currentPage}`).then(resp => {
+            //     var data = eval(resp.data);
+            //     self.searchRule.rows = data['rows'];
+            //     self.searchRule.totalPage = parseInt(data['totalPage']);
+            //     // self.types = data['types'];
+            //     self.searchRule.currentPage = data['currentPage'];
+            // })
+            self.doSearch();
         }
     });
 </script>

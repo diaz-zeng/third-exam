@@ -1,5 +1,7 @@
 package com.diaz.thirdexam.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,6 +13,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "bill_type")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class BillType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

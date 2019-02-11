@@ -56,12 +56,21 @@ public class IndexController {
 //    }
 
     @RequestMapping("/doSearch_page{page}")
-    public Map<String, Object> search(@PathVariable("page") Integer currentPage, Long typeId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date start, @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) throws IllegalDataException, DataNotFoundException {
+    public Map<String, Object> search(@PathVariable("page") Integer currentPage, Long typeSelect, @DateTimeFormat(pattern = "yyyy-MM-dd") Date start, @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) {
         Map<String, Object> map = new HashMap<>(0);
-        Page<Bill> byPage = billService.generalSearch(typeId, start, end, currentPage);
-        map.put("rows", byPage.getContent());
-        map.put("totalPage", byPage.getTotalPages());
-        return map;
+        try {
+            Page<Bill> byPage = null;
+
+            byPage = billService.generalSearch(typeSelect, start, end, currentPage);
+
+            map.put("rows", byPage.getContent());
+            map.put("totalPage", byPage.getTotalPages());
+            map.put("currentPage", byPage.getPageable().getPageNumber());
+        } catch (Exception e) {
+            map.put("errorMsg", e.getMessage());
+        } finally {
+            return map;
+        }
     }
 
     @RequestMapping("/addOne")

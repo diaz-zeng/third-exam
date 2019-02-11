@@ -1,5 +1,6 @@
 package com.diaz.thirdexam.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "bill")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Bill implements Serializable {
 
     @Id
@@ -24,7 +26,7 @@ public class Bill implements Serializable {
     @Column(name = "bill_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date date;
-    @ManyToOne(targetEntity = BillType.class)
+    @ManyToOne(targetEntity = BillType.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "bill_type_id", referencedColumnName = "type_id")
     @NotNull
     private BillType type;
