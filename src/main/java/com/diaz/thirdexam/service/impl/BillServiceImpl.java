@@ -18,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Diaz
+ * @since 2019/1/30 15:23
+ * 账单服务实现类
+ */
 @Service
 public class BillServiceImpl implements BillService {
 

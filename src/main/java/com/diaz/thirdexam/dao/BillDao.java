@@ -14,8 +14,10 @@ import java.util.Date;
 import java.util.Set;
 
 /**
+ *
  * @author Diaz
  * @since 2019/1/30 15:01
+ * 账单持久化层
  */
 @Repository
 public interface BillDao extends JpaRepository<Bill, Long>, JpaSpecificationExecutor<Bill> {

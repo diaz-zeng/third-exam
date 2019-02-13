@@ -11,6 +11,8 @@ import java.util.Date;
 /**
  * @author Diaz
  * @since 2019/1/30 14:31
+ *
+ * 账单项实体类
  */
 @Entity
 @Table(name = "bill")

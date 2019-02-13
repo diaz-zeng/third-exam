@@ -17,11 +17,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Diaz
+ * @since 2019/1/30 15:45
+ * 控制器
+ */
 @RestController
-public class IndexController {
+public class BillController {
     @Autowired
     BillService billService;
 
+    /**
+     * 定位到主页
+     *
+     * @return
+     */
     @RequestMapping("/index")
     public ModelAndView gotoIndex() {
         ModelAndView modelAndView = new ModelAndView();
@@ -29,6 +39,11 @@ public class IndexController {
         return modelAndView;
     }
 
+    /**
+     * 定位到记账页
+     *
+     * @return
+     */
     @RequestMapping("/add")
     public ModelAndView gotoAdd() {
         ModelAndView modelAndView = new ModelAndView();
@@ -36,7 +51,11 @@ public class IndexController {
         return modelAndView;
     }
 
-
+    /**
+     * 初始化页面，请求账单类型信息
+     *
+     * @return
+     */
     @RequestMapping("/initializePage")
     @PostMapping
     public Map<String, Object> initializePage() {
@@ -55,6 +74,15 @@ public class IndexController {
 //        return map;
 //    }
 
+    /**
+     * 查询数据
+     *
+     * @param currentPage
+     * @param typeSelect
+     * @param start
+     * @param end
+     * @return
+     */
     @RequestMapping("/doSearch_page{page}")
     public Map<String, Object> search(@PathVariable("page") Integer currentPage, Long typeSelect, @DateTimeFormat(pattern = "yyyy-MM-dd") Date start, @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) {
         Map<String, Object> map = new HashMap<>(0);
@@ -73,6 +101,16 @@ public class IndexController {
         }
     }
 
+    /**
+     * 添加一条记录
+     *
+     * @param type
+     * @param price
+     * @param info
+     * @param date
+     * @param title
+     * @return
+     */
     @RequestMapping("/addOne")
     @PostMapping
     public Map<String, Object> add(Long type, Float price, String info, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, String title) {

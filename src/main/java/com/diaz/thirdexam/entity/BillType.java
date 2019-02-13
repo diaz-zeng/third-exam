@@ -10,6 +10,8 @@ import java.util.Set;
 /**
  * @author Diaz
  * @since 2019/1/30 14:31
+ *
+ * 账单类型实体类
  */
 @Entity
 @Table(name = "bill_type")
