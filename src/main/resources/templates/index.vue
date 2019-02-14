@@ -48,7 +48,7 @@
                     </tr>
                     </thead>
                     <tbody v-if="rows!==null&&rows!==''">
-                    <tr v-for="r in rows">
+                    <tr v-for="r in rows" v-cloak>
                         <td v-cloak>{{r.title}}</td>
                         <td v-cloak>{{r.date | dateFormat}}</td>
                         <td v-cloak>{{r.type.title}}</td>
@@ -66,7 +66,7 @@
         </div>
         <div class="card-footer">
             <div class="form-inline">
-                <div class="m-auto">
+                <div class="m-auto" v-cloak>
                     <button class="btn" @click="backPage">上一页</button>
                     当前第{{searchRule.currentPage+1}}页/共{{searchRule.totalPage}}页
                     <button class="btn" @click="nextPage">下一页</button>

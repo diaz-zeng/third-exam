@@ -23,7 +23,7 @@
                     <div class="form-control" id="type">
                         <span class="mx-3" v-for="type in types" v-cloak>
                         {{type.title}}
-                        <input name="type" type="radio" :value="type.value" required v-model="formObj.type"/>
+                        <input v-cloak name="type" type="radio" :value="type.value" required v-model="formObj.type"/>
                     </span>
                     </div>
                     <label for="title">标题：</label>
@@ -32,7 +32,7 @@
                     <input class="form-control" type="date" id="date" name="date" v-model="formObj.date"
                            required/>
                     <label for="price">金额：</label>
-                    <input class="form-control" type="number" id="price" name="price" v-model="formObj.price" required/>
+                    <input class="form-control" type="number" step="0.01" id="price" name="price" v-model="formObj.price" required/>
                     <label for="info">说明：</label>
                     <textarea class="form-control" name="info" id="info" cols="50" rows="7"
                               v-model="formObj.info"></textarea>
